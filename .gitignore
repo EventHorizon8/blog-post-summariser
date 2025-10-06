@@ -1,3 +1,8 @@
+###> JetBrains IDEs ###
+.idea
+.DS_Store
+###< JetBrains IDEs ###
+
 /vendor/
 node_modules/
 npm-debug.log
