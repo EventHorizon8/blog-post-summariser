@@ -16,7 +16,6 @@ class ContentController extends Controller
     public function __construct(
         private readonly ClientScraperInterface $clientScraper,
         private readonly AIClientInterface $aiClient,
-        private readonly ContentParser $parser
     ) {
     }
 
@@ -33,7 +32,7 @@ class ContentController extends Controller
             $plainText = $contentSummary->original_content;
         } else {
             $content = $this->clientScraper->getContent($url);
-            $plainText = $this->parser->getHtmlToPlainText($content);
+            $plainText = (new ContentParser)->getHtmlToPlainText($content);
             $contentSummary = new ContentSummary();
             $contentSummary->url = $url;
             $contentSummary->original_content = $plainText;
