@@ -15,6 +15,9 @@ class OpenAIClient implements AIClientInterface
 
     private int $totalTokensPrevRequest = 0;
 
+    /**
+     * @inheritDoc
+     */
     public function summarizeContent(string $content): string
     {
         $response = OpenAI::responses()->create([
@@ -35,6 +38,9 @@ class OpenAIClient implements AIClientInterface
         return $response->outputText;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getTotalTokensPrevRequest(): int
     {
         return $this->totalTokensPrevRequest;

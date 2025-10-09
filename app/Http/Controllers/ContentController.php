@@ -33,6 +33,11 @@ class ContentController extends Controller
         } else {
             $content = $this->clientScraper->getContent($url);
             $plainText = (new ContentParser)->getHtmlToPlainText($content);
+
+            if (!$plainText) {
+                return response()->json(['message' => 'Failed to extract content from the URL.'], 422);
+            }
+
             $contentSummary = new ContentSummary();
             $contentSummary->url = $url;
             $contentSummary->original_content = $plainText;
@@ -40,7 +45,11 @@ class ContentController extends Controller
             $contentSummary->save();
         }
         //todo: can take long time
-        $summary = $this->aiClient->summarizeContent($plainText);
+        try {
+            $summary = $this->aiClient->summarizeContent($plainText);
+        } catch (\Throwable $exception) {
+            return response()->json(['message' => 'Failed to summarize content. ' . $exception->getMessage()], 500);
+        }
 
         if ($summary) {
             $contentSummary->summary = $summary;
