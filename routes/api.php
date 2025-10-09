@@ -7,4 +7,6 @@ Route::get('/health', function () {
     return response()->json(['status' => 'ok']);
 });
 
-Route::post('/summarize', [\App\Http\Controllers\ContentController::class, 'summarize']);
+Route::post('/summaries', [\App\Http\Controllers\ContentController::class, 'summarize']);
+
+Route::get('/summaries', [\App\Http\Controllers\ContentController::class, 'index']);

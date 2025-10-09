@@ -13,12 +13,29 @@ use Illuminate\Http\JsonResponse;
 
 class ContentController extends Controller
 {
+    private const int SUMMARIES_PER_PAGE = 3;
+
     public function __construct(
         private readonly ClientScraperInterface $clientScraper,
         private readonly AIClientInterface $aiClient,
     ) {
     }
 
+    /**
+     * The list of summaries
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        $summaries = ContentSummary::orderBy('created_at', 'desc')->paginate(self::SUMMARIES_PER_PAGE);
+        return response()->json($summaries);
+    }
+
+    /**
+     * Summarize the content by url
+     * @param SummarizeRequest $request
+     * @return JsonResponse
+     */
     public function summarize(SummarizeRequest $request): JsonResponse
     {
         $url = $request->input('url');
