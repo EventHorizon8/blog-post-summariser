@@ -4,6 +4,9 @@
 
 This module provides a backend service for summarizing blog posts using OpenAI's GPT-4 model. It accepts a URL of a blog post, fetches its content, and generates a concise summary.
 
+Frontend module is available here with screenshots:
+https://github.com/EventHorizon8/front-blog-post-summariser
+
 
 ### Stack
 - PHP >= 8.4
