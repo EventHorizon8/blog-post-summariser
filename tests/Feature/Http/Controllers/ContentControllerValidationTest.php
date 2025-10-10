@@ -13,14 +13,14 @@ class ContentControllerValidationTest extends TestCase
 
     public function test_summarize_requires_url()
     {
-        $response = $this->postJson('/api/summarize', []);
+        $response = $this->postJson('/api/summaries', []);
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['url']);
     }
 
     public function test_summarize_requires_valid_url()
     {
-        $response = $this->postJson('/api/summarize', ['url' => 'not-a-url']);
+        $response = $this->postJson('/api/summaries', ['url' => 'not-a-url']);
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['url']);
     }

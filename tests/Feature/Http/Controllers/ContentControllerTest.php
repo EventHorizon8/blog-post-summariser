@@ -40,7 +40,7 @@ class ContentControllerTest extends TestCase
             'summary' => 'Existing summary',
         ]);
 
-        $response = $this->postJson('/api/summarize', ['url' => 'http://test.com']);
+        $response = $this->postJson('/api/summaries', ['url' => 'http://test.com']);
 
         $response->assertOk()
             ->assertJsonFragment(['summary' => 'Existing summary']);
@@ -60,7 +60,7 @@ class ContentControllerTest extends TestCase
         $this->aiClient->shouldReceive('getTotalTokensPrevRequest')
             ->andReturn(42);
 
-        $response = $this->postJson('/api/summarize', ['url' => 'http://test.com']);
+        $response = $this->postJson('/api/summaries', ['url' => 'http://test.com']);
 
         $response->assertOk()
             ->assertJsonFragment(['summary' => 'AI summary', 'token_count' => 42]);
@@ -77,7 +77,7 @@ class ContentControllerTest extends TestCase
         $this->aiClient->shouldReceive('getTotalTokensPrevRequest')
             ->andReturn(42);
 
-        $response = $this->postJson('/api/summarize', ['url' => 'http://test.com']);
+        $response = $this->postJson('/api/summaries', ['url' => 'http://test.com']);
 
         $response->assertOk()
             ->assertJsonFragment(['summary' => 'AI summary', 'token_count' => 42]);
@@ -87,5 +87,18 @@ class ContentControllerTest extends TestCase
             'summary' => 'AI summary',
             'token_count' => 42,
         ]);
+    }
+
+    public function test_index_returns_paginated_summaries()
+    {
+        ContentSummary::factory()->count(5)->create();
+        $response = $this->getJson('/api/summaries');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data',
+                'last_page',
+            ]);
+        $this->assertCount(3, $response->json('data'));
     }
 }

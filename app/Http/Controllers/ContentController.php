@@ -61,7 +61,7 @@ class ContentController extends Controller
 
             $contentSummary->save();
         }
-        //todo: can take long time
+
         try {
             $summary = $this->aiClient->summarizeContent($plainText);
         } catch (\Throwable $exception) {
